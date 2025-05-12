@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cartas de Alerta Emocional</title>
+  <style>
+    body {
+      background: #f5f5f5;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    p.intro {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      font-size: 1.1em;
+      color: #555;
+    }
+
+    .cards-container {
+      display: none;
+    }
+
+    .cards-carousel-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      margin: 0 auto 40px;
+      max-width: 400px;
+      min-height: 240px;
+    }
+
+    .carousel-btn {
+      background: #86C0D1;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 2em;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .carousel-card {
+      width: 160px;
+      height: 220px;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .carousel-card .inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+      cursor: pointer;
+    }
+
+    .carousel-card.flipped .inner {
+      transform: rotateY(180deg);
+    }
+
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .front {
+      background: #86C0D1;
+      color: white;
+      font-size: 2.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .front img {
+      max-width: 80px;
+      max-height: 120px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .back {
+      background: #ffffff;
+      color: #c62828;
+      transform: rotateY(180deg);
+      font-size: 1em;
+      font-weight: bold;
+    }
+
+    .card.hide {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s;
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 0.95em;
+      color: #444;
+    }
+
+    .slide-out-left {
+      animation: slideOutLeft 0.35s forwards;
+    }
+
+    .slide-out-right {
+      animation: slideOutRight 0.35s forwards;
+    }
+
+    .slide-in-left {
+      animation: slideInLeft 0.35s forwards;
+    }
+
+    .slide-in-right {
+      animation: slideInRight 0.35s forwards;
+    }
+
+    @keyframes slideOutLeft {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes slideOutRight {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .cards-carousel-container {
+        max-width: 98vw;
+        min-height: 180px;
+        gap: 10px;
+      }
+      .carousel-card {
+        width: 90vw;
+        max-width: 320px;
+        height: 180px;
+      }
+      .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.5em;
+      }
+      .front img {
+        max-width: 60px;
+        max-height: 90px;
+      }
+      .footer {
+        font-size: 0.85em;
+        padding: 0 8px;
+      }
+      .intro {
+        font-size: 1em;
+        padding: 0 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cartas de Alerta Emocional</h1>
+  <p class="intro">
+    Essas frases representam pensamentos que muitos adolescentes têm, mas que raramente verbalizam diretamente. <br>
+    Clique nas cartas para revelar sinais de sofrimento emocional. Escutar pode salvar vidas.
+  </p>
+
+  <div class="cards-carousel-container">
+    <button class="carousel-btn prev" onclick="prevCard()" aria-label="Anterior">&#8592;</button>
+    <div class="carousel-card" id="carouselCard">
+      <!-- O conteúdo da carta será inserido via JS -->
+    </div>
+    <button class="carousel-btn next" onclick="nextCard()" aria-label="Próxima">&#8594;</button>
+  </div>
+
+  <div class="footer">
+    <p><strong>Ouça. Acolha. Aja.</strong></p>
+    <p>Se você ou alguém que conhece está em sofrimento emocional, procure ajuda.</p>
+    <p><strong>CVV - 188</strong> | Atendimento gratuito e sigiloso 24h por dia</p>
+  </div>
+
+  <script>
+    const cardsData = [
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu sinto que ninguém se importa comigo, seria melhor se eu não estivesse aqui.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Acho que o mundo ficaria melhor sem mim.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu não tenho mais forças para continuar, tudo é sempre tão difícil.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Me sinto vazio, como se nada tivesse sentido, nem mesmo as coisas que costumava gostar.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu só quero dormir e não acordar mais, ninguém vai sentir minha falta.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu tenho medo de dormir sozinho.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Fico com medo de que algo aconteça com vocês.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Tenho medo de falar na frente de outras pessoas.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu sei que o que eu sinto é medo, mas não sei como enfrentar.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Toda vez que vou à escola, sinto um medo muito grande de ser zombado.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu fico pensando em tudo o que pode dar errado, e não consigo parar.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Não sei como me concentrar, minha cabeça fica cheia de coisas ao mesmo tempo.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Sinto um aperto no peito só de pensar na prova de amanhã.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu não consigo me relaxar, fico com medo do futuro o tempo todo.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Fico tão nervoso que acabo nem conseguindo falar ou fazer as coisas direito.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu não consigo parar de pensar sobre o que como, ou como vou parecer.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Me sinto mais confortável quando como pouco, ou quando não como nada.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu me olho no espelho e vejo uma pessoa muito maior do que realmente sou.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Se eu engordar, não vou ser mais aceitável, por isso preciso perder peso rápido.' },
+      { front: 'https://guilhermesaito.com.br/wp-content/uploads/2025/05/Branco-Super-Vertical@2x.png', back: 'Eu fico com medo de que alguém descubra que estou tentando não comer.' },
+    ];
+
+    let currentIndex = 0;
+    let flipped = false;
+    let isTransitioning = false;
+
+    function renderCard(direction = null) {
+      const card = cardsData[currentIndex];
+      const cardDiv = document.getElementById('carouselCard');
+      cardDiv.className = 'carousel-card' + (flipped ? ' flipped' : '');
+      cardDiv.innerHTML = `
+        <div class="inner" onclick="flipCarouselCard()">
+          <div class="front"><img src="${card.front}" alt="Logo"></div>
+          <div class="back">${card.back}</div>
+        </div>
+      `;
+    }
+
+    function animateCardChange(nextIndex, direction) {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      const cardDiv = document.getElementById('carouselCard');
+      cardDiv.classList.add(direction === 'left' ? 'slide-out-left' : 'slide-out-right');
+      setTimeout(() => {
+        currentIndex = nextIndex;
+        renderCard();
+        cardDiv.classList.remove('slide-out-left', 'slide-out-right');
+        cardDiv.classList.add(direction === 'left' ? 'slide-in-right' : 'slide-in-left');
+        setTimeout(() => {
+          cardDiv.classList.remove('slide-in-left', 'slide-in-right');
+          isTransitioning = false;
+        }, 350);
+      }, 350);
+    }
+
+    function prevCard() {
+      if (flipped || isTransitioning) return;
+      const nextIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
+      animateCardChange(nextIndex, 'left');
+    }
+    function nextCard() {
+      if (flipped || isTransitioning) return;
+      const nextIndex = (currentIndex + 1) % cardsData.length;
+      animateCardChange(nextIndex, 'right');
+    }
+    function flipCarouselCard() {
+      if (flipped) return;
+      flipped = true;
+      renderCard();
+      // Esconde botões
+      document.querySelectorAll('.carousel-btn').forEach(btn => btn.style.display = 'none');
+    }
+
+    // Inicializa carrossel
+    renderCard();
+  </script>
+
+</body>
+</html>
